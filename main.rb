@@ -9,9 +9,9 @@
  
 grid = [
   '.*......',
-  '**..*...',
-  '...**...',
-  '........' 
+  '*****...',
+  '..***...',
+  '..***...' 
 ]
 
 # puts grid[0]
@@ -24,22 +24,34 @@ def contar_vecinos(grid, fila, columna)
     # Contador de vecinos celdas de la fila arriba 
     if fila - 1 >= 0 and columna + k >= 0 and columna + k < grid[0].length
       if grid[fila - 1][columna + k] == '*'
+        vecinos += 1
+        # print(fila - 1, ' ', columna + k)
+        # puts ' '
+      end
     end
 
     # Contador de vecinos celdas de la fila de en medio
     if fila >= 0 and columna + k >= 0 and columna + k < grid[0].length
-      if grid[fila - 1][columna + k] == '*'
-      print(fila - 1, ' ', columna + k)
-      puts ''
+      if columna + k != columna
+        if grid[fila][columna + k] == '*'
+          vecinos += 1
+          # print(fila, ' ', columna + k)
+          # puts ' '
+        end
+      end
     end
     
+    
     # Contador de vecinos celdas de la fila de abajo
-    if fila + 1 >= 0 and columna + k >= 0 and columna + k < grid[0].length
-      if grid[fila - 1][columna + k] == '*'
-      print(fila - 1, ' ', columna + k)
-      puts ''
+    if fila + 1 < grid.length and columna + k >= 0 and columna + k < grid[0].length
+      if grid[fila + 1][columna + k] == '*'
+        vecinos += 1
+        # print(fila + 1, ' ', columna + k)
+        # puts ''
+      end
     end
   end
+  return vecinos
 end
 
 # .*......
@@ -55,10 +67,12 @@ end
 
 # contar_vecinos(grid, 1, 0)
 # contar_vecinos(grid, 1, 1)
-# puts "checando 1, 6"
-# contar_vecinos(grid, 1, 6)
-# puts "checando 1, 7"
-# contar_vecinos(grid, 1, 7)
+puts "checando 2, 3"
+contar_vecinos(grid, 2, 3)
+puts "checando 1, 3"
+contar_vecinos(grid, 1, 3)
+puts "checando 1, 5"
+contar_vecinos(grid, 1, 5)
 
 # Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
 # Any live cell with more than three live neighbours dies, as if by overcrowding.
