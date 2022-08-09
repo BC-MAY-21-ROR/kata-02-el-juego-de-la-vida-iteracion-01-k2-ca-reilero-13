@@ -79,6 +79,55 @@ contar_vecinos(grid, 1, 5)
 # Any live cell with two or three live neighbours lives on to the next generation.
 # Any dead cell with exactly three live neighbours becomes a live cell.
 
+def reglas_del_juego(numero_de_vecinos, celda)
+
+  resultado = ' '
+
+
+  if celda == '*'
+    if numero_de_vecinos < 2
+      resultado = '.'
+    elsif numero_de_vecinos > 3
+      resultado = "."
+    else 
+      resultado = '*'  
+    end 
+  end
+  if celda == '.' and numero_de_vecinos == 3
+    resultado = '*'   
+  end
+  return resultado
+end
+
+
+def main ()
+  grid = [
+  '.*......',
+  '*****...',
+  '..***...',
+  '..***...' 
+]
+grid_temporal = [
+  '.*......',
+  '*****...',
+  '..***...',
+  '..***...' 
+]
+
+
+  for i in 0..grid.length - 1
+    for j in 0..grid[i].length - 1
+      vecinos = contar_vecinos(grid, i, j) 
+      grid_temporal[i][j] = reglas_del_juego(vecinos, grid[i][j])
+      #puts grid[i][j]
+    end
+  end
+  puts grid_temporal
+end
+
+main()
+
+
 # Generacion 1
 # .*......
 # **..*...
