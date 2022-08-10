@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Game rules
 # Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
 # Any live cell with more than three live neighbours dies, as if by overcrowding.
@@ -5,55 +7,42 @@
 # Any dead cell with exactly three live neighbours becomes a live cell.
 
 def game_rules(neighbors, cell)
-
   result = '.'
 
   if cell == '*'
-    if neighbors < 2
-      result = '.'
-    elsif neighbors > 3
-      result = "."
-    else 
-      result = '*'  
-    end 
+    result = if neighbors < 2
+               '.'
+             elsif neighbors > 3
+               '.'
+             else
+               '*'
+             end
   end
-  if cell == '.' and neighbors == 3
-    result = '*'   
-  end
-  return result
+  result = '*' if (cell == '.') && (neighbors == 3)
+  result
 end
 
 def count_neighbors(grid, row, col)
   neighbors = 0
-  
-  for k in -1..1 
-    # Contador de vecinos cells de la row arriba 
-    if row - 1 >= 0 and col + k >= 0 and col + k < grid[0].length
-      if grid[row - 1][col + k] == '*'
-        neighbors += 1
-      end
-    end
+
+  (-1..1).each do |k|
+    # Contador de vecinos cells de la row arriba
+    neighbors += 1 if (row - 1 >= 0) && (col + k >= 0) && col + k < grid[0].length && (grid[row - 1][col + k] == '*')
 
     # Contador de vecinos cells de la row de en medio
-    if row >= 0 and col + k >= 0 and col + k < grid[0].length
-      if col + k != col
-        if grid[row][col + k] == '*'
-          neighbors += 1
-        end
-      end
+    if (row >= 0) && (col + k >= 0) && col + k < grid[0].length && (col + k != col) && (grid[row][col + k] == '*')
+      neighbors += 1
     end
 
     # Contador de vecinos cells de la row de abajo
-    if row + 1 < grid.length and col + k >= 0 and col + k < grid[0].length
-      if grid[row + 1][col + k] == '*'
-        neighbors += 1
-      end
-    end
+    next unless (row + 1 < grid.length) && (col + k >= 0) && (col + k < grid[0].length)
+
+    neighbors += 1 if grid[row + 1][col + k] == '*'
   end
-  return neighbors
+  neighbors
 end
 
-def main ()
+def main
   puts 'Enter number of rows and columns '
   puts ''
   input = gets.chomp.split(' ')
@@ -70,16 +59,16 @@ def main ()
 
   grid_aux = Array.new(rows) { '.' * cols }
 
-  for i in 0..grid.length - 1
-    for j in 0..grid[i].length - 1
-      neighbors = count_neighbors(grid, i, j) 
+  (0..grid.length - 1).each do |i|
+    (0..grid[i].length - 1).each do |j|
+      neighbors = count_neighbors(grid, i, j)
       grid_aux[i][j] = game_rules(neighbors, grid[i][j])
     end
   end
-  
+
   puts ' New generation'
   puts ''
   puts grid_aux
 end
 
-main()
+main
